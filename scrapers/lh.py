@@ -96,8 +96,6 @@ def fetch_lh_bids():
         if not _matches_keyword(title):
             continue
         region_text = _xml_text(item, "rgnNm")
-        if not _matches_region(region_text, "한국토지주택공사", title):
-            continue
         deadline = _xml_text(item, "bidClosDate", "bidClseDt")
         if not is_deadline_in_range(deadline):
             continue
@@ -121,3 +119,4 @@ def fetch_lh_bids():
 if __name__ == "__main__":
     for b in fetch_lh_bids():
         print(b)
+ 
