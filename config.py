@@ -1,3 +1,4 @@
+ · PY
 """
 공통 설정 파일
 - 검색 키워드 / 대상 지역 / API 키를 여기서 관리합니다.
@@ -15,9 +16,10 @@ REGIONS = ["용인", "경기", "전국"]
  
 # ── 발주기관에 아래 단어가 포함되면, 지역 정보와 무관하게 항상 포함 ──
 # (한전/철도공단처럼 전국구 발주기관은 지역 필드가 비어있어도 실제로는 전국 대상인 경우가 많음)
+# 주의: "조달청"은 넣지 않음 — 지방조달청이 대행하는 공고는 실제 사업장이 특정 지역에
+# 한정된 경우가 대부분이라, 여기 넣으면 지역 필터가 사실상 무력화됨.
 ALWAYS_INCLUDE_ORGS = [
-    "한국전력공사", "한국철도공사", "국가철도공단", "한국토지주택공사",
-    "조달청", "국방부",
+    "한국전력공사", "한국철도공사", "국가철도공단",
 ]
  
 # ── 투찰마감까지 남은 일수 범위 (이 범위 밖의 공고는 목록에서 제외) ──
@@ -34,6 +36,8 @@ MAX_DAYS_UNTIL_DEADLINE = 30
 G2B_SERVICE_KEY = os.environ.get("G2B_SERVICE_KEY", "")
 LH_SERVICE_KEY = os.environ.get("LH_SERVICE_KEY", "")
 D2B_SERVICE_KEY = os.environ.get("D2B_SERVICE_KEY", "")
+KWATER_SERVICE_KEY = os.environ.get("KWATER_SERVICE_KEY", "")
+KEPCO_API_KEY = os.environ.get("KEPCO_API_KEY", "")
  
 # ── 조회 기간 (기본: 최근 N일 이내 공고) ──
 # 매일 자동 수집이지만, 혹시 놓친 공고가 없도록 넉넉하게 30일치를 매번 다시 확인합니다.
