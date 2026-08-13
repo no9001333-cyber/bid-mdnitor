@@ -19,6 +19,7 @@ import requests
  
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import KEYWORDS, REGIONS, D2B_SERVICE_KEY
+from scrapers._common import is_deadline_in_range
  
 ENDPOINT = "https://openapi.d2b.go.kr/openapi/service/BidPblancInfoService"
 OPERATION = "getDmstcCmpetBidPblancList"  # 국내 경쟁입찰공고 목록
@@ -76,7 +77,9 @@ def fetch_d2b_bids():
         if not _matches_keyword(title):
             continue
         region_text = item.get("dlvrPlaceNm", "") or item.get("rgnNm", "")
-        if not _matches_region(region_text):
+        # D2B(국방전자조달)는 출처 자체가 이미 군부대로 한정되어 있어 지역 필터는 적용하지 않음
+        deadline = item.get("bidClseDt", "")
+        if not is_deadline_in_range(deadline):
             continue
  
         results.append({
@@ -87,7 +90,7 @@ def fetch_d2b_bids():
             "region": region_text,
             "base_amount": item.get("presmptPrce", ""),
             "notice_date": item.get("pblancDt", ""),
-            "deadline": item.get("bidClseDt", ""),
+            "deadline": deadline,
             "url": "https://www.d2b.go.kr",
         })
  
