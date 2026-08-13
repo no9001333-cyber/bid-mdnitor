@@ -17,6 +17,7 @@ import requests
  
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import KEYWORDS, REGIONS, LH_SERVICE_KEY
+from scrapers._common import is_deadline_in_range
  
 ENDPOINT = "https://openapi.ebid.lh.or.kr/ebid.com.openapi.service.OpenBidInfoList.dev"
  
@@ -77,6 +78,9 @@ def fetch_lh_bids():
         region_text = item.get("rgnNm", "")
         if not _matches_region(region_text):
             continue
+        deadline = item.get("bidClosDate", "")
+        if not is_deadline_in_range(deadline):
+            continue
  
         results.append({
             "source": "LH",
@@ -86,7 +90,7 @@ def fetch_lh_bids():
             "region": region_text,
             "base_amount": item.get("bssamt", ""),
             "notice_date": item.get("ntceDate", ""),
-            "deadline": item.get("bidClosDate", ""),
+            "deadline": deadline,
             "url": item.get("url", "https://ebid.lh.or.kr"),
         })
  
