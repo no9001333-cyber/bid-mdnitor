@@ -16,6 +16,7 @@ from scrapers.lh import fetch_lh_bids
 from scrapers.d2b import fetch_d2b_bids
 from scrapers.kwater import fetch_kwater_bids
 from scrapers.kepco import fetch_kepco_bids
+from scrapers.korail import fetch_korail_bids
 from generate_dashboard import generate_dashboard
  
  
@@ -42,6 +43,7 @@ def main():
     new_bids += fetch_d2b_bids()
     new_bids += fetch_kwater_bids()
     new_bids += fetch_kepco_bids()
+    new_bids += fetch_korail_bids()
  
     existing = _load_existing()
  
@@ -77,3 +79,4 @@ def main():
  
 if __name__ == "__main__":
     main()
+ 
