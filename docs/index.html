@@ -128,10 +128,10 @@
   <h1>맞춤입찰정보 - 통신공사 모니터</h1>
   <p>나라장터 · LH · 국방전자조달(D2B) · 한국수자원공사 · 한국전력공사 · 한국철도공사 통신공사 공고 자동 수집 + 메모 + 투찰금액 계산</p>
   <div class="meta">
-    <span>마지막 업데이트: <b>2026-08-13 06:37</b></span>
+    <span>마지막 업데이트: <b>2026-08-13 06:58</b></span>
     <span>검색 키워드: <b>통신, 정보통신, 네트워크, 광통신, 무선통신</b></span>
     <span>대상 지역: <b>용인, 경기, 전국</b></span>
-    <span>총 <b>0</b>건</span>
+    <span>총 <b>9</b>건</span>
   </div>
 </header>
 
@@ -248,7 +248,7 @@
 </div>
 
 <script>
-const BIDS = [];
+const BIDS = [{"source": "나라장터", "title": "AI캠퍼스 조성을 위한 인프라 구축 통신 공사", "org": "포항공과대학교 산학협력단", "notice_no": "R26BK01631502", "region": "", "base_amount": "271818182", "notice_date": "2026-07-14 15:18:47", "deadline": "", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01631502&bidPbancOrd=001", "collected_at": "2026-08-13 06:58"}, {"source": "나라장터", "title": "제2공학관(K관) 환경개선공사 중 정보통신공사", "org": "상명대학교", "notice_no": "R26BK01637609", "region": "", "base_amount": "0", "notice_date": "2026-07-16 15:45:50", "deadline": "", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01637609&bidPbancOrd=000", "collected_at": "2026-08-13 06:58"}, {"source": "나라장터", "title": "2026학년도 서원대학교 제1,2기숙사(다애다정관) 환경개선공사(통신)", "org": "서원대학교", "notice_no": "R26BK01641462", "region": "", "base_amount": "179090909", "notice_date": "2026-07-21 10:16:54", "deadline": "", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01641462&bidPbancOrd=000", "collected_at": "2026-08-13 06:58"}, {"source": "나라장터", "title": "재학생 인큐베이팅 공간 조성 공사(정보통신)", "org": "백석대학교 산학협력단", "notice_no": "R26BK01662136", "region": "", "base_amount": "25454545", "notice_date": "2026-08-03 11:25:26", "deadline": "", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01662136&bidPbancOrd=000", "collected_at": "2026-08-13 06:58"}, {"source": "나라장터", "title": "공학관 분관 신축공사(통신)", "org": "경희대학교 국제캠퍼스", "notice_no": "R26BK01667025", "region": "", "base_amount": "0", "notice_date": "2026-08-06 17:46:38", "deadline": "", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01667025&bidPbancOrd=000", "collected_at": "2026-08-13 06:58"}, {"source": "나라장터", "title": "영동농협 용산지점 종합청사 통신공사 입찰공고", "org": "영동농업협동조합", "notice_no": "R26BK01673139", "region": "", "base_amount": "187740000", "notice_date": "2026-08-10 09:15:33", "deadline": "2026-08-21 10:00:00", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01673139&bidPbancOrd=000", "collected_at": "2026-08-13 06:58"}, {"source": "나라장터", "title": "2026년도 재난안전통신망 시설 보강 공사", "org": "조달청 서울지방조달청", "notice_no": "R26BK01676926", "region": "", "base_amount": "425349091", "notice_date": "2026-08-12 13:15:16", "deadline": "2026-08-21 10:00:00", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01676926&bidPbancOrd=000", "collected_at": "2026-08-13 06:58"}, {"source": "나라장터", "title": "중앙전파관리소 증축 정보통신공사", "org": "한국자산관리공사 국유재산관리기금", "notice_no": "R26BK01681537", "region": "", "base_amount": "1443040601", "notice_date": "2026-08-13 15:31:48", "deadline": "2026-08-21 10:00:00", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01681537&bidPbancOrd=000", "collected_at": "2026-08-13 06:58"}, {"source": "나라장터", "title": "2026년 어린이보호구역 교통신호기 설치공사(북부)", "org": "서울특별시", "notice_no": "R26BK01680648", "region": "", "base_amount": "258000000", "notice_date": "2026-08-13 15:49:01", "deadline": "2026-08-21 12:00:00", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01680648&bidPbancOrd=000", "collected_at": "2026-08-13 06:58"}];
 const MEMO_KEY = 'bidmonitor_memos';
 
 const tagClass = { "나라장터": "g2b", "LH": "lh", "국방전자조달(D2B)": "d2b", "한국수자원공사": "g2b", "한국전력공사": "g2b", "한국철도공사": "g2b" };
