@@ -18,7 +18,8 @@ from datetime import datetime, timedelta
 import requests
  
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from config import KEYWORDS, REGIONS, G2B_SERVICE_KEY, LOOKBACK_DAYS
+from config import KEYWORDS, REGIONS, ALWAYS_INCLUDE_ORGS, G2B_SERVICE_KEY, LOOKBACK_DAYS
+from scrapers._common import is_deadline_in_range
  
 ENDPOINT = "https://apis.data.go.kr/1230000/ad/BidPublicInfoService"
 # 공사(工事) 입찰공고 목록 조회 오퍼레이션
@@ -52,10 +53,13 @@ def _matches_keyword(title: str) -> bool:
     return any(k in (title or "") for k in KEYWORDS)
  
  
-def _matches_region(region_text: str) -> bool:
-    if not region_text:
-        # 지역 정보가 비어있으면(=전국/제한없음) 통과시킴
+def _matches_region(region_text: str, org_text: str = "") -> bool:
+    # 발주기관이 전국구(한전/철도공단 등)면 지역 정보와 무관하게 통과
+    if any(o in (org_text or "") for o in ALWAYS_INCLUDE_ORGS):
         return True
+    if not region_text:
+        # 지역 정보가 비어있으면 애매한 공고이므로 제외 (전국구 기관은 위에서 이미 통과됨)
+        return False
     return any(r in region_text for r in REGIONS)
  
  
@@ -91,7 +95,11 @@ def fetch_g2b_bids():
             if not _matches_keyword(title):
                 continue
             region_text = item.get("prtcptPsblRgnNm", "") or item.get("rgnDutyJntcontrctRt", "")
-            if not _matches_region(region_text):
+            org_text = item.get("ntceInsttNm", "")
+            if not _matches_region(region_text, org_text):
+                continue
+            deadline = item.get("bidClseDt", "")
+            if not is_deadline_in_range(deadline):
                 continue
  
             results.append({
@@ -102,7 +110,7 @@ def fetch_g2b_bids():
                 "region": region_text,
                 "base_amount": item.get("presmptPrce", ""),
                 "notice_date": item.get("bidNtceDt", ""),
-                "deadline": item.get("bidClseDt", ""),
+                "deadline": deadline,
                 "url": item.get("bidNtceDtlUrl", ""),
             })
  
