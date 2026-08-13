@@ -140,7 +140,7 @@ TEMPLATE = """<!DOCTYPE html>
  
 <header>
   <h1>맞춤입찰정보 - 통신공사 모니터</h1>
-  <p>나라장터 · LH · 국방전자조달(D2B) · 한국수자원공사 · 한국전력공사 통신공사 공고 자동 수집 + 메모 + 투찰금액 계산</p>
+  <p>나라장터 · LH · 국방전자조달(D2B) · 한국수자원공사 · 한국전력공사 · 한국철도공사 통신공사 공고 자동 수집 + 메모 + 투찰금액 계산</p>
   <div class="meta">
     <span>마지막 업데이트: <b>{updated_at}</b></span>
     <span>검색 키워드: <b>{keywords}</b></span>
@@ -158,6 +158,7 @@ TEMPLATE = """<!DOCTYPE html>
     <option value="국방전자조달(D2B)">국방전자조달(D2B)</option>
     <option value="한국수자원공사">한국수자원공사</option>
     <option value="한국전력공사">한국전력공사</option>
+    <option value="한국철도공사">한국철도공사</option>
   </select>
   <select id="regionFilter">
     <option value="">전체 지역</option>
@@ -264,7 +265,7 @@ TEMPLATE = """<!DOCTYPE html>
 const BIDS = {bids_json};
 const MEMO_KEY = 'bidmonitor_memos';
  
-const tagClass = {{ "나라장터": "g2b", "LH": "lh", "국방전자조달(D2B)": "d2b", "한국수자원공사": "g2b", "한국전력공사": "g2b" }};
+const tagClass = {{ "나라장터": "g2b", "LH": "lh", "국방전자조달(D2B)": "d2b", "한국수자원공사": "g2b", "한국전력공사": "g2b", "한국철도공사": "g2b" }};
  
 function loadMemos() {{
   try {{ return JSON.parse(localStorage.getItem(MEMO_KEY) || '{{}}'); }} catch (e) {{ return {{}}; }}
