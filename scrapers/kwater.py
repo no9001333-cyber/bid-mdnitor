@@ -80,8 +80,6 @@ def fetch_kwater_bids():
         if not _matches_keyword(title):
             continue
         region_text = item.get("rgnNm", "")
-        if not _matches_region(region_text, "한국수자원공사"):
-            continue
         deadline = item.get("bidClseDt", "")
         if not is_deadline_in_range(deadline):
             continue
