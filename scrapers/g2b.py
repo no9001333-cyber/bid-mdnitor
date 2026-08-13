@@ -102,8 +102,6 @@ def fetch_g2b_bids():
                 continue
             region_text = item.get("prtcptPsblRgnNm", "") or item.get("rgnDutyJntcontrctRt", "")
             org_text = item.get("ntceInsttNm", "")
-            if not _matches_region(region_text, org_text, title):
-                continue
             deadline = item.get("bidClseDt", "")
             if not is_deadline_in_range(deadline):
                 continue
@@ -132,3 +130,4 @@ def fetch_g2b_bids():
 if __name__ == "__main__":
     for b in fetch_g2b_bids():
         print(b)
+ 
