@@ -28,7 +28,7 @@
   header p { margin: 0; color: var(--muted); font-size: 0.88rem; }
   .meta { display:flex; gap:16px; flex-wrap:wrap; margin-top:12px; font-size:0.8rem; color:var(--muted); }
   .meta b { color: var(--ink); }
-
+ 
   .controls {
     display:flex; gap:10px; flex-wrap:wrap;
     padding:14px 24px; border-bottom:1px solid var(--line);
@@ -39,10 +39,10 @@
     background:var(--card); font-size:0.85rem; color:var(--ink);
   }
   .controls input { flex:1; min-width:160px; }
-
+ 
   main { padding: 8px 24px 60px; }
   .count { font-size:0.82rem; color:var(--muted); margin:14px 0; }
-
+ 
   table { width:100%; border-collapse:collapse; font-size:0.84rem; }
   thead th {
     text-align:left; padding:9px 10px; border-bottom:2px solid var(--ink);
@@ -53,12 +53,12 @@
   td { padding:10px; }
   td.title a { color:var(--ink); text-decoration:none; font-weight:500; }
   td.title a:hover { color:var(--accent); text-decoration:underline; }
-
+ 
   .tag { display:inline-block; font-size:0.72rem; padding:2px 8px; border-radius:999px; border:1px solid var(--line); color:var(--muted); }
   .tag.g2b { border-color:#2a6f97; color:#2a6f97; }
   .tag.lh { border-color:#6a994e; color:#6a994e; }
   .tag.d2b { border-color:var(--accent); color:var(--accent); }
-
+ 
   .memo-input {
     width: 140px; padding:6px 8px; font-size:0.8rem;
     border:1px solid var(--line); border-radius:5px; background:var(--paper); color:var(--ink);
@@ -68,10 +68,10 @@
     border:none; border-radius:6px; background:var(--ink); color:#fff; cursor:pointer; white-space:nowrap;
   }
   .btn-calc:hover { background:#0c1730; }
-
+ 
   .empty { padding:60px 0; text-align:center; color:var(--muted); }
   footer { padding:20px 24px 40px; font-size:0.78rem; color:var(--muted); border-top:1px solid var(--line); }
-
+ 
   /* 모달 (투찰금액 계산기) */
   .modal-overlay {
     display:none; position:fixed; inset:0; background:rgba(20,33,61,0.5);
@@ -99,19 +99,19 @@
   .btn-primary { background:var(--accent); color:#fff; }
   .btn-secondary { background:var(--ink); color:#fff; }
   .btn:disabled { background:var(--line); color:var(--muted); cursor:not-allowed; }
-
+ 
   .mini-table { width:100%; border-collapse:collapse; font-size:0.78rem; margin-top:8px; }
   .mini-table th, .mini-table td { padding:5px 6px; text-align:right; border-bottom:1px solid var(--line); }
   .mini-table th:first-child, .mini-table td:first-child { text-align:center; }
   .mini-table tr.picked { background:var(--accent-soft); font-weight:600; }
-
+ 
   .result-grid { display:grid; grid-template-columns:1fr auto; gap:5px 10px; font-size:0.84rem; margin-top:10px; }
   .result-grid .k { color:var(--muted); }
   .result-grid .v { font-weight:600; text-align:right; }
   .final-box { margin-top:12px; padding:14px; border-radius:8px; background:var(--good-soft); border:1px solid var(--good); text-align:center; }
   .final-box .label { font-size:0.78rem; color:var(--good); margin-bottom:3px; }
   .final-box .amount { font-size:1.3rem; font-weight:700; }
-
+ 
   @media (max-width: 720px) {
     table, thead, tbody, tr, td { display:block; }
     thead { display:none; }
@@ -123,18 +123,18 @@
 </style>
 </head>
 <body>
-
+ 
 <header>
   <h1>맞춤입찰정보 - 통신공사 모니터</h1>
   <p>나라장터 · LH · 국방전자조달(D2B) · 한국수자원공사 · 한국전력공사 · 한국철도공사 통신공사 공고 자동 수집 + 메모 + 투찰금액 계산</p>
   <div class="meta">
-    <span>마지막 업데이트: <b>2026-08-13 06:58</b></span>
+    <span>마지막 업데이트: <b>2026-08-13 07:19</b></span>
     <span>검색 키워드: <b>통신, 정보통신, 네트워크, 광통신, 무선통신</b></span>
-    <span>대상 지역: <b>용인, 경기, 전국</b></span>
-    <span>총 <b>9</b>건</span>
+    <span>지역: <b>전체 수집 후 직접 필터링</b></span>
+    <span>총 <b>16</b>건</span>
   </div>
 </header>
-
+ 
 <div class="controls">
   <input id="search" type="text" placeholder="공고명·발주기관 검색...">
   <select id="sourceFilter">
@@ -150,10 +150,27 @@
     <option value="">전체 지역</option>
     <option value="용인">용인</option>
     <option value="경기">경기</option>
+    <option value="서울">서울</option>
+    <option value="인천">인천</option>
+    <option value="부산">부산</option>
+    <option value="대구">대구</option>
+    <option value="광주">광주</option>
+    <option value="대전">대전</option>
+    <option value="울산">울산</option>
+    <option value="세종">세종</option>
+    <option value="강원">강원</option>
+    <option value="충북">충북</option>
+    <option value="충남">충남</option>
+    <option value="전북">전북</option>
+    <option value="전남">전남</option>
+    <option value="경북">경북</option>
+    <option value="경남">경남</option>
+    <option value="제주">제주</option>
     <option value="전국">전국</option>
+    <option value="__EMPTY__">지역 미표기</option>
   </select>
 </div>
-
+ 
 <div class="controls" style="border-top:none;">
   <span style="font-size:0.82rem; color:var(--muted); align-self:center;">투찰마감 기간</span>
   <input id="dateStart" type="date">
@@ -164,7 +181,7 @@
   <button class="btn-calc" onclick="setRange(180)">6개월</button>
   <button class="btn-calc" onclick="setRange(null)">전체</button>
 </div>
-
+ 
 <main>
   <div class="count" id="count"></div>
   <table>
@@ -178,19 +195,19 @@
   </table>
   <div class="empty" id="emptyMsg" style="display:none;">조건에 맞는 공고가 없습니다.</div>
 </main>
-
+ 
 <footer>
   이 페이지는 매일 자동 실행되는 스크립트가 생성합니다. 메모는 이 브라우저에만 저장됩니다(다른 기기와 공유되지 않음).
   투찰 전에는 반드시 원본 사이트에서 공고 내용을 다시 확인하세요.
 </footer>
-
+ 
 <!-- 투찰금액 계산 모달 -->
 <div class="modal-overlay" id="calcModal">
   <div class="modal">
     <button class="modal-close" onclick="closeCalc()">✕</button>
     <h3 id="calcTitle">투찰금액 계산</h3>
     <div class="sub" id="calcOrg"></div>
-
+ 
     <div class="grid2">
       <div class="field">
         <label>기초금액 (원)</label>
@@ -221,17 +238,17 @@
       <label>낙찰하한율 직접 입력 (%)</label>
       <input id="calcCustomRate" type="number" step="0.001">
     </div>
-
+ 
     <div class="btn-row">
       <button class="btn btn-primary" onclick="calcGenerate()">🎲 복수예가 15개 생성</button>
       <button class="btn btn-secondary" id="calcDrawBtn" onclick="calcDraw()" disabled>🎯 4개 추첨</button>
     </div>
-
+ 
     <table class="mini-table" id="calcTable" style="display:none;">
       <thead><tr><th>번호</th><th>변동률</th><th>예가</th></tr></thead>
       <tbody id="calcTbody"></tbody>
     </table>
-
+ 
     <div id="calcResultBox" style="display:none;">
       <div class="result-grid">
         <div class="k">4개 평균 (사정예정가격)</div><div class="v" id="c_assessed">-</div>
@@ -246,13 +263,13 @@
     </div>
   </div>
 </div>
-
+ 
 <script>
-const BIDS = [{"source": "나라장터", "title": "AI캠퍼스 조성을 위한 인프라 구축 통신 공사", "org": "포항공과대학교 산학협력단", "notice_no": "R26BK01631502", "region": "", "base_amount": "271818182", "notice_date": "2026-07-14 15:18:47", "deadline": "", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01631502&bidPbancOrd=001", "collected_at": "2026-08-13 06:58"}, {"source": "나라장터", "title": "제2공학관(K관) 환경개선공사 중 정보통신공사", "org": "상명대학교", "notice_no": "R26BK01637609", "region": "", "base_amount": "0", "notice_date": "2026-07-16 15:45:50", "deadline": "", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01637609&bidPbancOrd=000", "collected_at": "2026-08-13 06:58"}, {"source": "나라장터", "title": "2026학년도 서원대학교 제1,2기숙사(다애다정관) 환경개선공사(통신)", "org": "서원대학교", "notice_no": "R26BK01641462", "region": "", "base_amount": "179090909", "notice_date": "2026-07-21 10:16:54", "deadline": "", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01641462&bidPbancOrd=000", "collected_at": "2026-08-13 06:58"}, {"source": "나라장터", "title": "재학생 인큐베이팅 공간 조성 공사(정보통신)", "org": "백석대학교 산학협력단", "notice_no": "R26BK01662136", "region": "", "base_amount": "25454545", "notice_date": "2026-08-03 11:25:26", "deadline": "", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01662136&bidPbancOrd=000", "collected_at": "2026-08-13 06:58"}, {"source": "나라장터", "title": "공학관 분관 신축공사(통신)", "org": "경희대학교 국제캠퍼스", "notice_no": "R26BK01667025", "region": "", "base_amount": "0", "notice_date": "2026-08-06 17:46:38", "deadline": "", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01667025&bidPbancOrd=000", "collected_at": "2026-08-13 06:58"}, {"source": "나라장터", "title": "영동농협 용산지점 종합청사 통신공사 입찰공고", "org": "영동농업협동조합", "notice_no": "R26BK01673139", "region": "", "base_amount": "187740000", "notice_date": "2026-08-10 09:15:33", "deadline": "2026-08-21 10:00:00", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01673139&bidPbancOrd=000", "collected_at": "2026-08-13 06:58"}, {"source": "나라장터", "title": "2026년도 재난안전통신망 시설 보강 공사", "org": "조달청 서울지방조달청", "notice_no": "R26BK01676926", "region": "", "base_amount": "425349091", "notice_date": "2026-08-12 13:15:16", "deadline": "2026-08-21 10:00:00", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01676926&bidPbancOrd=000", "collected_at": "2026-08-13 06:58"}, {"source": "나라장터", "title": "중앙전파관리소 증축 정보통신공사", "org": "한국자산관리공사 국유재산관리기금", "notice_no": "R26BK01681537", "region": "", "base_amount": "1443040601", "notice_date": "2026-08-13 15:31:48", "deadline": "2026-08-21 10:00:00", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01681537&bidPbancOrd=000", "collected_at": "2026-08-13 06:58"}, {"source": "나라장터", "title": "2026년 어린이보호구역 교통신호기 설치공사(북부)", "org": "서울특별시", "notice_no": "R26BK01680648", "region": "", "base_amount": "258000000", "notice_date": "2026-08-13 15:49:01", "deadline": "2026-08-21 12:00:00", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01680648&bidPbancOrd=000", "collected_at": "2026-08-13 06:58"}];
+const BIDS = [{"source": "나라장터", "title": "AI캠퍼스 조성을 위한 인프라 구축 통신 공사", "org": "포항공과대학교 산학협력단", "notice_no": "R26BK01631502", "region": "", "base_amount": "271818182", "notice_date": "2026-07-14 15:18:47", "deadline": "", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01631502&bidPbancOrd=001", "collected_at": "2026-08-13 07:19"}, {"source": "나라장터", "title": "제2공학관(K관) 환경개선공사 중 정보통신공사", "org": "상명대학교", "notice_no": "R26BK01637609", "region": "", "base_amount": "0", "notice_date": "2026-07-16 15:45:50", "deadline": "", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01637609&bidPbancOrd=000", "collected_at": "2026-08-13 07:19"}, {"source": "나라장터", "title": "2026학년도 서원대학교 제1,2기숙사(다애다정관) 환경개선공사(통신)", "org": "서원대학교", "notice_no": "R26BK01641462", "region": "", "base_amount": "179090909", "notice_date": "2026-07-21 10:16:54", "deadline": "", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01641462&bidPbancOrd=000", "collected_at": "2026-08-13 07:19"}, {"source": "나라장터", "title": "재학생 인큐베이팅 공간 조성 공사(정보통신)", "org": "백석대학교 산학협력단", "notice_no": "R26BK01662136", "region": "", "base_amount": "25454545", "notice_date": "2026-08-03 11:25:26", "deadline": "", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01662136&bidPbancOrd=000", "collected_at": "2026-08-13 07:19"}, {"source": "나라장터", "title": "공학관 분관 신축공사(통신)", "org": "경희대학교 국제캠퍼스", "notice_no": "R26BK01667025", "region": "", "base_amount": "0", "notice_date": "2026-08-06 17:46:38", "deadline": "", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01667025&bidPbancOrd=000", "collected_at": "2026-08-13 07:19"}, {"source": "나라장터", "title": "세종대학교 애지헌복합관 신축공사(통신)", "org": "세종대학교", "notice_no": "R26BK01678868", "region": "", "base_amount": "0", "notice_date": "2026-08-12 13:31:39", "deadline": "", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01678868&bidPbancOrd=000", "collected_at": "2026-08-13 07:19"}, {"source": "나라장터", "title": "서울도시철도7호선 청라국제도시 연장 003정거장 정보통신공사", "org": "조달청 인천지방조달청", "notice_no": "R26BK01666117", "region": "49", "base_amount": "2036192000", "notice_date": "2026-08-04 17:34:16", "deadline": "2026-08-21 10:00:00", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01666117&bidPbancOrd=000", "collected_at": "2026-08-13 07:19"}, {"source": "나라장터", "title": "(가칭)창릉5초 외 1교((가칭)장항중) 신축 통신공사(계속비)", "org": "경기도교육청 경기도고양교육지원청", "notice_no": "R26BK01666657", "region": "49", "base_amount": "1658672728", "notice_date": "2026-08-05 10:33:12", "deadline": "2026-08-21 10:00:00", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01666657&bidPbancOrd=000", "collected_at": "2026-08-13 07:19"}, {"source": "나라장터", "title": "영동농협 용산지점 종합청사 통신공사 입찰공고", "org": "영동농업협동조합", "notice_no": "R26BK01673139", "region": "", "base_amount": "187740000", "notice_date": "2026-08-10 09:15:33", "deadline": "2026-08-21 10:00:00", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01673139&bidPbancOrd=000", "collected_at": "2026-08-13 07:19"}, {"source": "나라장터", "title": "2026년도 재난안전통신망 시설 보강 공사", "org": "조달청 서울지방조달청", "notice_no": "R26BK01676926", "region": "", "base_amount": "425349091", "notice_date": "2026-08-12 13:15:16", "deadline": "2026-08-21 10:00:00", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01676926&bidPbancOrd=000", "collected_at": "2026-08-13 07:19"}, {"source": "나라장터", "title": "부산광역시교육청 영양교육체험센터 조리종사자 실습실 리모델링 정보통신공사", "org": "부산광역시교육청", "notice_no": "R26BK01680349", "region": "", "base_amount": "77473637", "notice_date": "2026-08-13 09:30:16", "deadline": "2026-08-21 10:00:00", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01680349&bidPbancOrd=000", "collected_at": "2026-08-13 07:19"}, {"source": "나라장터", "title": "강구시장 현대화사업(공동판매장 조성사업) 리모델링공사 통신공사 견적제출 안내공고", "org": "경상북도 영덕군", "notice_no": "R26BK01680524", "region": "", "base_amount": "21690000", "notice_date": "2026-08-13 10:32:22", "deadline": "2026-08-21 10:00:00", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01680524&bidPbancOrd=000", "collected_at": "2026-08-13 07:19"}, {"source": "나라장터", "title": "중앙전파관리소 증축 정보통신공사", "org": "한국자산관리공사 국유재산관리기금", "notice_no": "R26BK01681537", "region": "", "base_amount": "1443040601", "notice_date": "2026-08-13 15:31:48", "deadline": "2026-08-21 10:00:00", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01681537&bidPbancOrd=000", "collected_at": "2026-08-13 07:19"}, {"source": "나라장터", "title": "2026년 어린이보호구역 교통신호기 설치공사(북부)", "org": "서울특별시", "notice_no": "R26BK01680648", "region": "", "base_amount": "258000000", "notice_date": "2026-08-13 15:49:01", "deadline": "2026-08-21 12:00:00", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01680648&bidPbancOrd=000", "collected_at": "2026-08-13 07:19"}, {"source": "나라장터", "title": "주요 도심지에 대한 자가통신망 구축사업(1차년도)", "org": "조달청 대구지방조달청", "notice_no": "R26BK01681283", "region": "", "base_amount": "954950000", "notice_date": "2026-08-13 15:16:20", "deadline": "2026-08-25 10:00:00", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01681283&bidPbancOrd=000", "collected_at": "2026-08-13 07:19"}, {"source": "나라장터", "title": "국립호남권청소년디딤센터 건립사업 통신공사", "org": "조달청 전북지방조달청", "notice_no": "R26BK01676659", "region": "", "base_amount": "689970000", "notice_date": "2026-08-11 16:02:43", "deadline": "2026-08-27 10:00:00", "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01676659&bidPbancOrd=000", "collected_at": "2026-08-13 07:19"}];
 const MEMO_KEY = 'bidmonitor_memos';
-
+ 
 const tagClass = { "나라장터": "g2b", "LH": "lh", "국방전자조달(D2B)": "d2b", "한국수자원공사": "g2b", "한국전력공사": "g2b", "한국철도공사": "g2b" };
-
+ 
 function loadMemos() {
   try { return JSON.parse(localStorage.getItem(MEMO_KEY) || '{}'); } catch (e) { return {}; }
 }
@@ -261,16 +278,16 @@ function saveMemo(key, value) {
   memos[key] = value;
   localStorage.setItem(MEMO_KEY, JSON.stringify(memos));
 }
-
+ 
 function memoKey(b) { return (b.source || '') + '::' + (b.notice_no || b.title || ''); }
-
+ 
 function parseDateStr(s) {
   if (!s) return null;
   const m = String(s).match(/(\d{4})-?(\d{2})-?(\d{2})/);
   if (!m) return null;
   return new Date(`${m[1]}-${m[2]}-${m[3]}`);
 }
-
+ 
 function setRange(days) {
   const endInput = document.getElementById('dateEnd');
   const startInput = document.getElementById('dateStart');
@@ -286,13 +303,13 @@ function setRange(days) {
   }
   render();
 }
-
+ 
 function parseAmount(v) {
   if (!v) return null;
   const n = parseInt(String(v).replace(/[^0-9]/g, ''), 10);
   return isNaN(n) ? null : n;
 }
-
+ 
 function render() {
   const q = document.getElementById('search').value.trim().toLowerCase();
   const src = document.getElementById('sourceFilter').value;
@@ -304,11 +321,18 @@ function render() {
   const memos = loadMemos();
   const tbody = document.getElementById('tbody');
   tbody.innerHTML = '';
-
+ 
   const filtered = BIDS.filter(b => {
     const matchQ = !q || (b.title || '').toLowerCase().includes(q) || (b.org || '').toLowerCase().includes(q);
     const matchSrc = !src || b.source === src;
-    const matchRegion = !region || (b.region || '').includes(region) || (b.region || '') === '';
+    let matchRegion;
+    if (!region) {
+      matchRegion = true;
+    } else if (region === '__EMPTY__') {
+      matchRegion = !(b.region || '').trim();
+    } else {
+      matchRegion = (b.region || '').includes(region);
+    }
     let matchDate = true;
     if (startDate || endDate) {
       const d = parseDateStr(b.deadline) || parseDateStr(b.notice_date);
@@ -321,10 +345,10 @@ function render() {
     }
     return matchQ && matchSrc && matchRegion && matchDate;
   });
-
+ 
   document.getElementById('count').textContent = filtered.length + '건 표시 중';
   document.getElementById('emptyMsg').style.display = filtered.length ? 'none' : 'block';
-
+ 
   filtered.forEach((b, idx) => {
     const cls = tagClass[b.source] || '';
     const key = memoKey(b);
@@ -347,22 +371,22 @@ function render() {
     tbody.appendChild(tr);
   });
 }
-
+ 
 document.getElementById('search').addEventListener('input', render);
 document.getElementById('sourceFilter').addEventListener('change', render);
 document.getElementById('regionFilter').addEventListener('change', render);
 document.getElementById('dateStart').addEventListener('change', render);
 document.getElementById('dateEnd').addEventListener('change', render);
 render();
-
+ 
 /* ---------- 투찰금액 계산 모달 ---------- */
 let calcBids = [];
 let calcPicked = [];
-
+ 
 document.getElementById('calcRateSel').addEventListener('change', (e) => {
   document.getElementById('calcCustomRateField').style.display = e.target.value === 'custom' ? 'flex' : 'none';
 });
-
+ 
 function openCalc(bid) {
   document.getElementById('calcTitle').textContent = bid.title || '투찰금액 계산';
   document.getElementById('calcOrg').textContent = (bid.org || '') + (bid.region ? ' · ' + bid.region : '');
@@ -377,7 +401,7 @@ function openCalc(bid) {
 function closeCalc() {
   document.getElementById('calcModal').classList.remove('open');
 }
-
+ 
 function calcRate() {
   const sel = document.getElementById('calcRateSel').value;
   if (sel === 'custom') {
@@ -387,12 +411,12 @@ function calcRate() {
   return parseFloat(sel);
 }
 function won(n) { return Math.round(n).toLocaleString('ko-KR') + '원'; }
-
+ 
 function calcGenerate() {
   const base = parseFloat(document.getElementById('calcBase').value);
   const variance = parseFloat(document.getElementById('calcVariance').value);
   if (!base || base <= 0) { alert('기초금액을 입력해주세요.'); return; }
-
+ 
   calcBids = [];
   for (let i = 1; i <= 15; i++) {
     const rate = (Math.random() * (variance * 2) - variance);
@@ -405,7 +429,7 @@ function calcGenerate() {
   document.getElementById('calcResultBox').style.display = 'none';
   document.getElementById('calcDrawBtn').disabled = false;
 }
-
+ 
 function renderCalcTable() {
   const tbody = document.getElementById('calcTbody');
   tbody.innerHTML = '';
@@ -417,13 +441,13 @@ function renderCalcTable() {
     tbody.appendChild(tr);
   });
 }
-
+ 
 function calcDraw() {
   if (calcBids.length < 4) return;
   const shuffled = [...calcBids].sort(() => Math.random() - 0.5);
   calcPicked = shuffled.slice(0, 4).sort((a, b) => a.no - b.no);
   renderCalcTable();
-
+ 
   const aValue = parseFloat(document.getElementById('calcAValue').value) || 0;
   const lowLimitRate = calcRate();
   const avgPrice = calcPicked.reduce((s, b) => s + b.price, 0) / calcPicked.length;
@@ -431,7 +455,7 @@ function calcDraw() {
   const appliedAmount = exclAmount * lowLimitRate;
   const readdedAmount = appliedAmount + aValue;
   const finalAmount = Math.floor(readdedAmount);
-
+ 
   document.getElementById('c_assessed').textContent = won(avgPrice);
   document.getElementById('c_excl').textContent = won(exclAmount);
   document.getElementById('c_applied').textContent = won(appliedAmount);
@@ -440,6 +464,6 @@ function calcDraw() {
   document.getElementById('calcResultBox').style.display = 'block';
 }
 </script>
-
+ 
 </body>
 </html>
