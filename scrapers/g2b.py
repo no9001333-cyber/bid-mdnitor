@@ -1,38 +1,38 @@
 """
 나라장터(조달청) 공사 입찰공고 수집기
 공공데이터포털의 "조달청_나라장터 입찰공고정보서비스" OpenAPI 사용
- 
+
 사전 준비:
 1) https://www.data.go.kr 가입 → "나라장터 입찰공고정보서비스" 검색 → 활용신청 (즉시 자동승인)
 2) 발급받은 서비스키를 환경변수 G2B_SERVICE_KEY 로 설정
- 
+
 주의: 공공데이터포털 API는 오퍼레이션/파라미터명이 가끔 개편됩니다.
       아래 ENDPOINT/OPERATION이 동작하지 않으면 data.go.kr에서 해당 서비스의
       "Swagger 문서"를 열어 최신 오퍼레이션명을 확인해 OPERATION 값만 바꿔주면 됩니다.
 """
- 
+
 import sys
 import os
 from datetime import datetime, timedelta
- 
+
 import requests
- 
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import KEYWORDS, REGIONS, ALWAYS_INCLUDE_ORGS, G2B_SERVICE_KEY, LOOKBACK_DAYS
-from scrapers._common import is_deadline_in_range
- 
+from scrapers._common import is_deadline_in_range, get_with_retry
+
 ENDPOINT = "https://apis.data.go.kr/1230000/ad/BidPublicInfoService"
 # 공사(工事) 입찰공고 목록 조회 오퍼레이션
 OPERATION = "getBidPblancListInfoCnstwk"
- 
- 
+
+
 def _clean_key(key: str) -> str:
     """data.go.kr에서 Encoding/Decoding 어느 버전의 키를 넣어도 동작하도록,
     URL 인코딩되어 있으면 한 번 풀어준다 (requests가 다시 인코딩하므로 이중 인코딩 방지)."""
     import urllib.parse
     return urllib.parse.unquote(key)
- 
- 
+
+
 def _fetch_page(begin_dt: str, end_dt: str, page_no: int, num_of_rows: int = 500):
     url = f"{ENDPOINT}/{OPERATION}"
     params = {
@@ -44,15 +44,14 @@ def _fetch_page(begin_dt: str, end_dt: str, page_no: int, num_of_rows: int = 500
         "inqryEndDt": end_dt,
         "type": "json",
     }
-    resp = requests.get(url, params=params, timeout=30)
-    resp.raise_for_status()
+    resp = get_with_retry(url, params=params, timeout=30)
     return resp.json()
- 
- 
+
+
 def _matches_keyword(title: str) -> bool:
     return any(k in (title or "") for k in KEYWORDS)
- 
- 
+
+
 def _matches_region(region_text: str, org_text: str = "") -> bool:
     # 발주기관이 전국구(한전/철도공단 등)면 지역 정보와 무관하게 통과
     if any(o in (org_text or "") for o in ALWAYS_INCLUDE_ORGS):
@@ -61,19 +60,19 @@ def _matches_region(region_text: str, org_text: str = "") -> bool:
         # 지역 정보가 비어있으면 애매한 공고이므로 제외 (전국구 기관은 위에서 이미 통과됨)
         return False
     return any(r in region_text for r in REGIONS)
- 
- 
+
+
 def fetch_g2b_bids():
     """나라장터 공사 입찰공고 중 통신 키워드 + 대상 지역에 해당하는 공고 리스트 반환"""
     if not G2B_SERVICE_KEY:
         print("[G2B] 서비스키(G2B_SERVICE_KEY)가 설정되지 않아 건너뜁니다.")
         return []
- 
+
     end = datetime.now()
     begin = end - timedelta(days=LOOKBACK_DAYS)
     begin_dt = begin.strftime("%Y%m%d0000")
     end_dt = end.strftime("%Y%m%d2359")
- 
+
     results = []
     page_no = 1
     while True:
@@ -82,14 +81,14 @@ def fetch_g2b_bids():
         except Exception as e:
             print(f"[G2B] 요청 실패: {e}")
             break
- 
+
         body = data.get("response", {}).get("body", {})
         items = body.get("items", [])
         if isinstance(items, dict):
             items = items.get("item", [])
         if not items:
             break
- 
+
         for item in items:
             title = item.get("bidNtceNm", "")
             if not _matches_keyword(title):
@@ -101,7 +100,7 @@ def fetch_g2b_bids():
             deadline = item.get("bidClseDt", "")
             if not is_deadline_in_range(deadline):
                 continue
- 
+
             results.append({
                 "source": "나라장터",
                 "title": title,
@@ -113,17 +112,16 @@ def fetch_g2b_bids():
                 "deadline": deadline,
                 "url": item.get("bidNtceDtlUrl", ""),
             })
- 
+
         total_count = int(body.get("totalCount", 0))
         if page_no * 500 >= total_count:
             break
         page_no += 1
- 
+
     print(f"[G2B] 총 {len(results)}건 수집")
     return results
- 
- 
+
+
 if __name__ == "__main__":
     for b in fetch_g2b_bids():
         print(b)
- 

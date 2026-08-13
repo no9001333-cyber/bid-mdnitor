@@ -11,6 +11,24 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import MIN_DAYS_UNTIL_DEADLINE, MAX_DAYS_UNTIL_DEADLINE
 
+import time
+import requests
+
+
+def get_with_retry(url, params=None, headers=None, timeout=30, retries=2, backoff=3):
+    """일시적인 타임아웃/연결 오류에 대비해 몇 번 재시도하는 GET 요청."""
+    last_error = None
+    for attempt in range(retries + 1):
+        try:
+            resp = requests.get(url, params=params, headers=headers, timeout=timeout)
+            resp.raise_for_status()
+            return resp
+        except Exception as e:
+            last_error = e
+            if attempt < retries:
+                time.sleep(backoff)
+    raise last_error
+
 
 def parse_deadline(deadline_text: str):
     """'2026-08-11 12:00', '20260811 1200' 등 다양한 형식에서 날짜만 뽑아 datetime으로 변환.

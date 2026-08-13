@@ -14,9 +14,10 @@ import requests
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import KEYWORDS, REGIONS, ALWAYS_INCLUDE_ORGS, KWATER_SERVICE_KEY
-from scrapers._common import is_deadline_in_range
+from scrapers._common import is_deadline_in_range, get_with_retry
 
 ENDPOINT = "https://apis.data.go.kr/B500001/ebid/tndr3"
+# 공사 입찰공고 정보 조회 오퍼레이션 (용역/내자/물품은 각각 다른 오퍼레이션명 사용 - 필요시 추가)
 OPERATION = "getEbidPblancTndrCnstwkList"
 
 
@@ -52,8 +53,7 @@ def fetch_kwater_bids():
     }
 
     try:
-        resp = requests.get(url, params=params, timeout=30)
-        resp.raise_for_status()
+        resp = get_with_retry(url, params=params, timeout=30)
         data = resp.json()
     except Exception as e:
         print(f"[K-water] 요청 실패: {e}")

@@ -27,7 +27,8 @@ ENDPOINT = "https://api.odcloud.kr/api/15136102/v1/uddi:6b5d4d9f-d3dd-4aa0-a67b-
 
 def _clean_key(key: str) -> str:
     import urllib.parse
-    return urllib.parse.unquote(key)
+    # 앞뒤 공백/줄바꿈이 섞여 들어오면 HTTP 헤더에서 오류가 나므로 반드시 strip
+    return urllib.parse.unquote(key).strip()
 
 
 def _matches_keyword(title: str) -> bool:
