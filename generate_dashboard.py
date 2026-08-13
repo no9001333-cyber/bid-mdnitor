@@ -1,0 +1,485 @@
+"""
+data/bids.json 을 읽어 docs/index.html ("맞춤입찰정보" 통합 대시보드)를 생성합니다.
+- 검색/지역 필터
+- 공고별 메모 (브라우저에 저장, localStorage)
+- 공고별 [투찰금액 계산] 버튼 -> 그 자리에서 복수예가 15개 생성 -> 4개 추첨 -> 최종 투찰금액까지 계산
+GitHub Pages가 /docs 폴더를 서빙하도록 설정하면 별도 서버 없이 바로 웹에서 볼 수 있습니다.
+"""
+
+import json
+import os
+from datetime import datetime
+
+from config import DOCS_DIR, DASHBOARD_HTML_PATH, BIDS_JSON_PATH, KEYWORDS, REGIONS
+
+TEMPLATE = """<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>맞춤입찰정보 - 통신공사 모니터</title>
+<style>
+  :root {{
+    --ink: #14213d;
+    --paper: #fbfaf7;
+    --line: #e4e1d8;
+    --accent: #c8511b;
+    --accent-soft: #f5e3d8;
+    --muted: #6b6b63;
+    --card: #ffffff;
+    --good: #2a6f97;
+    --good-soft: #e4eef4;
+  }}
+  * {{ box-sizing: border-box; }}
+  body {{
+    margin: 0;
+    font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+  }}
+  header {{ padding: 28px 24px 16px; border-bottom: 1px solid var(--line); }}
+  header h1 {{ margin: 0 0 6px; font-size: 1.4rem; letter-spacing: -0.02em; }}
+  header p {{ margin: 0; color: var(--muted); font-size: 0.88rem; }}
+  .meta {{ display:flex; gap:16px; flex-wrap:wrap; margin-top:12px; font-size:0.8rem; color:var(--muted); }}
+  .meta b {{ color: var(--ink); }}
+
+  .controls {{
+    display:flex; gap:10px; flex-wrap:wrap;
+    padding:14px 24px; border-bottom:1px solid var(--line);
+    position: sticky; top: 0; background: var(--paper); z-index: 5;
+  }}
+  .controls input, .controls select {{
+    padding:8px 12px; border:1px solid var(--line); border-radius:6px;
+    background:var(--card); font-size:0.85rem; color:var(--ink);
+  }}
+  .controls input {{ flex:1; min-width:160px; }}
+
+  main {{ padding: 8px 24px 60px; }}
+  .count {{ font-size:0.82rem; color:var(--muted); margin:14px 0; }}
+
+  table {{ width:100%; border-collapse:collapse; font-size:0.84rem; }}
+  thead th {{
+    text-align:left; padding:9px 10px; border-bottom:2px solid var(--ink);
+    color:var(--muted); font-weight:600; white-space:nowrap;
+  }}
+  tbody tr {{ border-bottom:1px solid var(--line); vertical-align: top; }}
+  tbody tr:hover {{ background: var(--accent-soft); }}
+  td {{ padding:10px; }}
+  td.title a {{ color:var(--ink); text-decoration:none; font-weight:500; }}
+  td.title a:hover {{ color:var(--accent); text-decoration:underline; }}
+
+  .tag {{ display:inline-block; font-size:0.72rem; padding:2px 8px; border-radius:999px; border:1px solid var(--line); color:var(--muted); }}
+  .tag.g2b {{ border-color:#2a6f97; color:#2a6f97; }}
+  .tag.lh {{ border-color:#6a994e; color:#6a994e; }}
+  .tag.d2b {{ border-color:var(--accent); color:var(--accent); }}
+
+  .memo-input {{
+    width: 140px; padding:6px 8px; font-size:0.8rem;
+    border:1px solid var(--line); border-radius:5px; background:var(--paper); color:var(--ink);
+  }}
+  .btn-calc {{
+    padding:6px 10px; font-size:0.78rem; font-weight:600;
+    border:none; border-radius:6px; background:var(--ink); color:#fff; cursor:pointer; white-space:nowrap;
+  }}
+  .btn-calc:hover {{ background:#0c1730; }}
+
+  .empty {{ padding:60px 0; text-align:center; color:var(--muted); }}
+  footer {{ padding:20px 24px 40px; font-size:0.78rem; color:var(--muted); border-top:1px solid var(--line); }}
+
+  /* 모달 (투찰금액 계산기) */
+  .modal-overlay {{
+    display:none; position:fixed; inset:0; background:rgba(20,33,61,0.5);
+    z-index:50; align-items:flex-start; justify-content:center; overflow-y:auto; padding:30px 14px;
+  }}
+  .modal-overlay.open {{ display:flex; }}
+  .modal {{
+    background:var(--card); border-radius:10px; max-width:520px; width:100%;
+    padding:22px; position:relative;
+  }}
+  .modal h3 {{ margin:0 0 4px; font-size:1.05rem; }}
+  .modal .sub {{ font-size:0.8rem; color:var(--muted); margin-bottom:16px; }}
+  .modal-close {{
+    position:absolute; top:14px; right:16px; border:none; background:none;
+    font-size:1.2rem; cursor:pointer; color:var(--muted);
+  }}
+  .grid2 {{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }}
+  .field {{ display:flex; flex-direction:column; gap:4px; margin-bottom:10px; }}
+  .field label {{ font-size:0.76rem; color:var(--muted); }}
+  .field input, .field select {{
+    padding:8px 9px; border:1px solid var(--line); border-radius:6px; font-size:0.86rem; background:var(--paper); color:var(--ink);
+  }}
+  .btn-row {{ display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; }}
+  .btn {{ padding:9px 16px; border-radius:7px; border:none; font-size:0.84rem; font-weight:600; cursor:pointer; }}
+  .btn-primary {{ background:var(--accent); color:#fff; }}
+  .btn-secondary {{ background:var(--ink); color:#fff; }}
+  .btn:disabled {{ background:var(--line); color:var(--muted); cursor:not-allowed; }}
+
+  .mini-table {{ width:100%; border-collapse:collapse; font-size:0.78rem; margin-top:8px; }}
+  .mini-table th, .mini-table td {{ padding:5px 6px; text-align:right; border-bottom:1px solid var(--line); }}
+  .mini-table th:first-child, .mini-table td:first-child {{ text-align:center; }}
+  .mini-table tr.picked {{ background:var(--accent-soft); font-weight:600; }}
+
+  .result-grid {{ display:grid; grid-template-columns:1fr auto; gap:5px 10px; font-size:0.84rem; margin-top:10px; }}
+  .result-grid .k {{ color:var(--muted); }}
+  .result-grid .v {{ font-weight:600; text-align:right; }}
+  .final-box {{ margin-top:12px; padding:14px; border-radius:8px; background:var(--good-soft); border:1px solid var(--good); text-align:center; }}
+  .final-box .label {{ font-size:0.78rem; color:var(--good); margin-bottom:3px; }}
+  .final-box .amount {{ font-size:1.3rem; font-weight:700; }}
+
+  @media (max-width: 720px) {{
+    table, thead, tbody, tr, td {{ display:block; }}
+    thead {{ display:none; }}
+    tbody tr {{ background:var(--card); border:1px solid var(--line); border-radius:8px; margin-bottom:12px; padding:8px 4px; }}
+    td {{ padding:6px 12px; }}
+    td::before {{ content: attr(data-label); display:block; font-size:0.7rem; color:var(--muted); margin-bottom:2px; }}
+    .grid2 {{ grid-template-columns:1fr; }}
+  }}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>맞춤입찰정보 - 통신공사 모니터</h1>
+  <p>나라장터 · LH · 국방전자조달(D2B) 통신공사 공고 자동 수집 + 메모 + 투찰금액 계산</p>
+  <div class="meta">
+    <span>마지막 업데이트: <b>{updated_at}</b></span>
+    <span>검색 키워드: <b>{keywords}</b></span>
+    <span>대상 지역: <b>{regions}</b></span>
+    <span>총 <b>{count}</b>건</span>
+  </div>
+</header>
+
+<div class="controls">
+  <input id="search" type="text" placeholder="공고명 검색...">
+  <select id="sourceFilter">
+    <option value="">전체 출처</option>
+    <option value="나라장터">나라장터</option>
+    <option value="LH">LH</option>
+    <option value="국방전자조달(D2B)">국방전자조달(D2B)</option>
+  </select>
+  <select id="regionFilter">
+    <option value="">전체 지역</option>
+    <option value="용인">용인</option>
+    <option value="경기">경기</option>
+    <option value="전국">전국</option>
+  </select>
+</div>
+
+<div class="controls" style="border-top:none;">
+  <span style="font-size:0.82rem; color:var(--muted); align-self:center;">투찰마감 기간</span>
+  <input id="dateStart" type="date">
+  <span style="align-self:center; color:var(--muted);">~</span>
+  <input id="dateEnd" type="date">
+  <button class="btn-calc" onclick="setRange(30)">1개월</button>
+  <button class="btn-calc" onclick="setRange(90)">3개월</button>
+  <button class="btn-calc" onclick="setRange(180)">6개월</button>
+  <button class="btn-calc" onclick="setRange(null)">전체</button>
+</div>
+
+<main>
+  <div class="count" id="count"></div>
+  <table>
+    <thead>
+      <tr>
+        <th>출처</th><th>공고명</th><th>발주기관</th><th>지역</th>
+        <th>기초금액</th><th>투찰마감</th><th>메모</th><th></th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+  <div class="empty" id="emptyMsg" style="display:none;">조건에 맞는 공고가 없습니다.</div>
+</main>
+
+<footer>
+  이 페이지는 매일 자동 실행되는 스크립트가 생성합니다. 메모는 이 브라우저에만 저장됩니다(다른 기기와 공유되지 않음).
+  투찰 전에는 반드시 원본 사이트에서 공고 내용을 다시 확인하세요.
+</footer>
+
+<!-- 투찰금액 계산 모달 -->
+<div class="modal-overlay" id="calcModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeCalc()">✕</button>
+    <h3 id="calcTitle">투찰금액 계산</h3>
+    <div class="sub" id="calcOrg"></div>
+
+    <div class="grid2">
+      <div class="field">
+        <label>기초금액 (원)</label>
+        <input id="calcBase" type="number">
+      </div>
+      <div class="field">
+        <label>A값 (원)</label>
+        <input id="calcAValue" type="number" placeholder="법정 정산항목 합계">
+      </div>
+      <div class="field">
+        <label>예가변동폭 (%)</label>
+        <select id="calcVariance">
+          <option value="2">-2 / +2</option>
+          <option value="3">-3 / +3</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>낙찰하한율</label>
+        <select id="calcRateSel">
+          <option value="0.89745">10억 미만 (89.745%)</option>
+          <option value="0.88745">10억~50억 (88.745%)</option>
+          <option value="0.87495">50억~100억 (87.495%)</option>
+          <option value="custom">직접입력</option>
+        </select>
+      </div>
+    </div>
+    <div class="field" id="calcCustomRateField" style="display:none;">
+      <label>낙찰하한율 직접 입력 (%)</label>
+      <input id="calcCustomRate" type="number" step="0.001">
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="calcGenerate()">🎲 복수예가 15개 생성</button>
+      <button class="btn btn-secondary" id="calcDrawBtn" onclick="calcDraw()" disabled>🎯 4개 추첨</button>
+    </div>
+
+    <table class="mini-table" id="calcTable" style="display:none;">
+      <thead><tr><th>번호</th><th>변동률</th><th>예가</th></tr></thead>
+      <tbody id="calcTbody"></tbody>
+    </table>
+
+    <div id="calcResultBox" style="display:none;">
+      <div class="result-grid">
+        <div class="k">4개 평균 (사정예정가격)</div><div class="v" id="c_assessed">-</div>
+        <div class="k">A값 제외 대상금액</div><div class="v" id="c_excl">-</div>
+        <div class="k">하한율 적용 금액</div><div class="v" id="c_applied">-</div>
+        <div class="k">A값 재합산 금액</div><div class="v" id="c_readded">-</div>
+      </div>
+      <div class="final-box">
+        <div class="label">🎯 최종 투찰금액 (원 단위 절사)</div>
+        <div class="amount" id="c_final">-</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const BIDS = {bids_json};
+const MEMO_KEY = 'bidmonitor_memos';
+
+const tagClass = {{ "나라장터": "g2b", "LH": "lh", "국방전자조달(D2B)": "d2b" }};
+
+function loadMemos() {{
+  try {{ return JSON.parse(localStorage.getItem(MEMO_KEY) || '{{}}'); }} catch (e) {{ return {{}}; }}
+}}
+function saveMemo(key, value) {{
+  const memos = loadMemos();
+  memos[key] = value;
+  localStorage.setItem(MEMO_KEY, JSON.stringify(memos));
+}}
+
+function memoKey(b) {{ return (b.source || '') + '::' + (b.notice_no || b.title || ''); }}
+
+function parseDateStr(s) {{
+  if (!s) return null;
+  const m = String(s).match(/(\\d{{4}})-?(\\d{{2}})-?(\\d{{2}})/);
+  if (!m) return null;
+  return new Date(`${{m[1]}}-${{m[2]}}-${{m[3]}}`);
+}}
+
+function setRange(days) {{
+  const endInput = document.getElementById('dateEnd');
+  const startInput = document.getElementById('dateStart');
+  if (days === null) {{
+    startInput.value = '';
+    endInput.value = '';
+  }} else {{
+    const end = new Date();
+    const start = new Date();
+    start.setDate(start.getDate() - days);
+    endInput.value = end.toISOString().slice(0, 10);
+    startInput.value = start.toISOString().slice(0, 10);
+  }}
+  render();
+}}
+
+function parseAmount(v) {{
+  if (!v) return null;
+  const n = parseInt(String(v).replace(/[^0-9]/g, ''), 10);
+  return isNaN(n) ? null : n;
+}}
+
+function render() {{
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const src = document.getElementById('sourceFilter').value;
+  const region = document.getElementById('regionFilter').value;
+  const startVal = document.getElementById('dateStart').value;
+  const endVal = document.getElementById('dateEnd').value;
+  const startDate = startVal ? new Date(startVal) : null;
+  const endDate = endVal ? new Date(endVal) : null;
+  const memos = loadMemos();
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = '';
+
+  const filtered = BIDS.filter(b => {{
+    const matchQ = !q || (b.title || '').toLowerCase().includes(q);
+    const matchSrc = !src || b.source === src;
+    const matchRegion = !region || (b.region || '').includes(region) || (b.region || '') === '';
+    let matchDate = true;
+    if (startDate || endDate) {{
+      const d = parseDateStr(b.deadline) || parseDateStr(b.notice_date);
+      if (!d) {{
+        matchDate = false;
+      }} else {{
+        if (startDate && d < startDate) matchDate = false;
+        if (endDate && d > endDate) matchDate = false;
+      }}
+    }}
+    return matchQ && matchSrc && matchRegion && matchDate;
+  }});
+
+  document.getElementById('count').textContent = filtered.length + '건 표시 중';
+  document.getElementById('emptyMsg').style.display = filtered.length ? 'none' : 'block';
+
+  filtered.forEach((b, idx) => {{
+    const cls = tagClass[b.source] || '';
+    const key = memoKey(b);
+    const memoVal = memos[key] || '';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td data-label="출처"><span class="tag ${{cls}}">${{b.source || ''}}</span></td>
+      <td data-label="공고명" class="title">${{b.url ? `<a href="${{b.url}}" target="_blank" rel="noopener">${{b.title || ''}}</a>` : (b.title || '')}}</td>
+      <td data-label="발주기관">${{b.org || ''}}</td>
+      <td data-label="지역">${{b.region || ''}}</td>
+      <td data-label="기초금액">${{b.base_amount ? Number(b.base_amount).toLocaleString('ko-KR') + '원' : '-'}}</td>
+      <td data-label="투찰마감">${{b.deadline || '-'}}</td>
+      <td data-label="메모"><input class="memo-input" type="text" placeholder="메모 입력..." value="${{memoVal.replace(/"/g,'&quot;')}}" data-key="${{key}}"></td>
+      <td><button class="btn-calc" data-idx="${{idx}}">투찰금액 계산</button></td>
+    `;
+    tr.querySelector('.memo-input').addEventListener('change', (e) => {{
+      saveMemo(e.target.dataset.key, e.target.value);
+    }});
+    tr.querySelector('.btn-calc').addEventListener('click', () => openCalc(b));
+    tbody.appendChild(tr);
+  }});
+}}
+
+document.getElementById('search').addEventListener('input', render);
+document.getElementById('sourceFilter').addEventListener('change', render);
+document.getElementById('regionFilter').addEventListener('change', render);
+document.getElementById('dateStart').addEventListener('change', render);
+document.getElementById('dateEnd').addEventListener('change', render);
+render();
+
+/* ---------- 투찰금액 계산 모달 ---------- */
+let calcBids = [];
+let calcPicked = [];
+
+document.getElementById('calcRateSel').addEventListener('change', (e) => {{
+  document.getElementById('calcCustomRateField').style.display = e.target.value === 'custom' ? 'flex' : 'none';
+}});
+
+function openCalc(bid) {{
+  document.getElementById('calcTitle').textContent = bid.title || '투찰금액 계산';
+  document.getElementById('calcOrg').textContent = (bid.org || '') + (bid.region ? ' · ' + bid.region : '');
+  document.getElementById('calcBase').value = parseAmount(bid.base_amount) || '';
+  document.getElementById('calcAValue').value = '';
+  document.getElementById('calcTable').style.display = 'none';
+  document.getElementById('calcResultBox').style.display = 'none';
+  document.getElementById('calcDrawBtn').disabled = true;
+  calcBids = []; calcPicked = [];
+  document.getElementById('calcModal').classList.add('open');
+}}
+function closeCalc() {{
+  document.getElementById('calcModal').classList.remove('open');
+}}
+
+function calcRate() {{
+  const sel = document.getElementById('calcRateSel').value;
+  if (sel === 'custom') {{
+    const v = parseFloat(document.getElementById('calcCustomRate').value);
+    return isNaN(v) ? 0 : v / 100;
+  }}
+  return parseFloat(sel);
+}}
+function won(n) {{ return Math.round(n).toLocaleString('ko-KR') + '원'; }}
+
+function calcGenerate() {{
+  const base = parseFloat(document.getElementById('calcBase').value);
+  const variance = parseFloat(document.getElementById('calcVariance').value);
+  if (!base || base <= 0) {{ alert('기초금액을 입력해주세요.'); return; }}
+
+  calcBids = [];
+  for (let i = 1; i <= 15; i++) {{
+    const rate = (Math.random() * (variance * 2) - variance);
+    const price = Math.round(base * (1 + rate / 100));
+    calcBids.push({{ no: i, rate, price }});
+  }}
+  calcPicked = [];
+  renderCalcTable();
+  document.getElementById('calcTable').style.display = 'table';
+  document.getElementById('calcResultBox').style.display = 'none';
+  document.getElementById('calcDrawBtn').disabled = false;
+}}
+
+function renderCalcTable() {{
+  const tbody = document.getElementById('calcTbody');
+  tbody.innerHTML = '';
+  const pickedNos = calcPicked.map(p => p.no);
+  calcBids.forEach(b => {{
+    const tr = document.createElement('tr');
+    if (pickedNos.includes(b.no)) tr.className = 'picked';
+    tr.innerHTML = `<td>${{b.no}}</td><td>${{b.rate >= 0 ? '+' : ''}}${{b.rate.toFixed(3)}}%</td><td>${{won(b.price)}}</td>`;
+    tbody.appendChild(tr);
+  }});
+}}
+
+function calcDraw() {{
+  if (calcBids.length < 4) return;
+  const shuffled = [...calcBids].sort(() => Math.random() - 0.5);
+  calcPicked = shuffled.slice(0, 4).sort((a, b) => a.no - b.no);
+  renderCalcTable();
+
+  const aValue = parseFloat(document.getElementById('calcAValue').value) || 0;
+  const lowLimitRate = calcRate();
+  const avgPrice = calcPicked.reduce((s, b) => s + b.price, 0) / calcPicked.length;
+  const exclAmount = avgPrice - aValue;
+  const appliedAmount = exclAmount * lowLimitRate;
+  const readdedAmount = appliedAmount + aValue;
+  const finalAmount = Math.floor(readdedAmount);
+
+  document.getElementById('c_assessed').textContent = won(avgPrice);
+  document.getElementById('c_excl').textContent = won(exclAmount);
+  document.getElementById('c_applied').textContent = won(appliedAmount);
+  document.getElementById('c_readded').textContent = won(readdedAmount);
+  document.getElementById('c_final').textContent = won(finalAmount);
+  document.getElementById('calcResultBox').style.display = 'block';
+}}
+</script>
+
+</body>
+</html>
+"""
+
+
+def generate_dashboard(bids=None):
+    os.makedirs(DOCS_DIR, exist_ok=True)
+
+    if bids is None:
+        if os.path.exists(BIDS_JSON_PATH):
+            with open(BIDS_JSON_PATH, "r", encoding="utf-8") as f:
+                bids = json.load(f)
+        else:
+            bids = []
+
+    html = TEMPLATE.format(
+        updated_at=datetime.now().strftime("%Y-%m-%d %H:%M"),
+        keywords=", ".join(KEYWORDS),
+        regions=", ".join(REGIONS),
+        count=len(bids),
+        bids_json=json.dumps(bids, ensure_ascii=False),
+    )
+
+    with open(DASHBOARD_HTML_PATH, "w", encoding="utf-8") as f:
+        f.write(html)
+
+    print(f"대시보드 생성 완료: {DASHBOARD_HTML_PATH}")
+
+
+if __name__ == "__main__":
+    generate_dashboard()
