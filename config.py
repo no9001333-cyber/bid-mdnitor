@@ -1,4 +1,3 @@
- · PY
 """
 공통 설정 파일
 - 검색 키워드 / 대상 지역 / API 키를 여기서 관리합니다.
@@ -38,6 +37,7 @@ LH_SERVICE_KEY = os.environ.get("LH_SERVICE_KEY", "")
 D2B_SERVICE_KEY = os.environ.get("D2B_SERVICE_KEY", "")
 KWATER_SERVICE_KEY = os.environ.get("KWATER_SERVICE_KEY", "")
 KEPCO_API_KEY = os.environ.get("KEPCO_API_KEY", "")
+KORAIL_SERVICE_KEY = os.environ.get("KORAIL_SERVICE_KEY", "")
  
 # ── 조회 기간 (기본: 최근 N일 이내 공고) ──
 # 매일 자동 수집이지만, 혹시 놓친 공고가 없도록 넉넉하게 30일치를 매번 다시 확인합니다.
