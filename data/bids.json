@@ -9,7 +9,7 @@
     "notice_date": "2026-09-10 15:36:18",
     "deadline": "",
     "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01723510&bidPbancOrd=000",
-    "collected_at": "2026-10-02 02:03"
+    "collected_at": "2026-10-03 01:47"
   },
   {
     "source": "나라장터",
@@ -21,7 +21,7 @@
     "notice_date": "2026-09-22 16:33:50",
     "deadline": "",
     "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01739885&bidPbancOrd=001",
-    "collected_at": "2026-10-02 02:03"
+    "collected_at": "2026-10-03 01:47"
   },
   {
     "source": "나라장터",
@@ -33,7 +33,19 @@
     "notice_date": "2026-10-01 13:57:44",
     "deadline": "",
     "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01752802&bidPbancOrd=000",
-    "collected_at": "2026-10-02 02:03"
+    "collected_at": "2026-10-03 01:47"
+  },
+  {
+    "source": "나라장터",
+    "title": "경희대학교 (구)이과대학서관 1층 양자팹(Quantum Fab) 네트워크 설치",
+    "org": "경희대학교",
+    "notice_no": "R26BK01755713",
+    "region": "",
+    "base_amount": "35780000",
+    "notice_date": "2026-10-02 17:24:26",
+    "deadline": "",
+    "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01755713&bidPbancOrd=000",
+    "collected_at": "2026-10-03 01:47"
   },
   {
     "source": "나라장터",
@@ -45,7 +57,7 @@
     "notice_date": "2026-09-29 09:58:35",
     "deadline": "2026-10-12 10:00:00",
     "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01747430&bidPbancOrd=001",
-    "collected_at": "2026-10-02 02:03"
+    "collected_at": "2026-10-03 01:47"
   },
   {
     "source": "나라장터",
@@ -57,7 +69,79 @@
     "notice_date": "2026-10-01 15:30:27",
     "deadline": "2026-10-12 10:00:00",
     "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01753344&bidPbancOrd=000",
-    "collected_at": "2026-10-02 02:03"
+    "collected_at": "2026-10-03 01:47"
+  },
+  {
+    "source": "나라장터",
+    "title": "송라초등학교 전기시설개선 정보통신공사 소액수의 견적제출 공고",
+    "org": "경상북도교육청 경상북도포항교육지원청",
+    "notice_no": "R26BK01754580",
+    "region": "",
+    "base_amount": "22480000",
+    "notice_date": "2026-10-02 13:30:51",
+    "deadline": "2026-10-12 10:00:00",
+    "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01754580&bidPbancOrd=000",
+    "collected_at": "2026-10-03 01:47"
+  },
+  {
+    "source": "나라장터",
+    "title": "연천군 조직개편에 따른 정보통신망 공사(통신)",
+    "org": "경기도 연천군",
+    "notice_no": "R26BK01754584",
+    "region": "",
+    "base_amount": "50545455",
+    "notice_date": "2026-10-02 15:11:14",
+    "deadline": "2026-10-12 10:00:00",
+    "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01754584&bidPbancOrd=001",
+    "collected_at": "2026-10-03 01:47"
+  },
+  {
+    "source": "나라장터",
+    "title": "연천군 조직개편에 따른 정보통신망 공사(통신)",
+    "org": "경기도 연천군",
+    "notice_no": "R26BK01755399",
+    "region": "",
+    "base_amount": "50545455",
+    "notice_date": "2026-10-02 15:46:33",
+    "deadline": "2026-10-12 10:00:00",
+    "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01755399&bidPbancOrd=000",
+    "collected_at": "2026-10-03 01:47"
+  },
+  {
+    "source": "나라장터",
+    "title": "수자원통신위성 지상국 기초공사",
+    "org": "기후에너지환경부 낙동강홍수통제소",
+    "notice_no": "R26BK01754950",
+    "region": "",
+    "base_amount": "294963637",
+    "notice_date": "2026-10-02 16:06:10",
+    "deadline": "2026-10-12 10:00:00",
+    "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01754950&bidPbancOrd=000",
+    "collected_at": "2026-10-03 01:47"
+  },
+  {
+    "source": "나라장터",
+    "title": "2026년 3-2차 학교유무선 네트워크 개선사업 정보통신공사[1권역]",
+    "org": "경기도교육청 경기도안양과천교육지원청",
+    "notice_no": "R26BK01755710",
+    "region": "",
+    "base_amount": "376700000",
+    "notice_date": "2026-10-02 17:51:29",
+    "deadline": "2026-10-12 10:00:00",
+    "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01755710&bidPbancOrd=000",
+    "collected_at": "2026-10-03 01:47"
+  },
+  {
+    "source": "나라장터",
+    "title": "2026년 3-2차 학교유무선 네트워크 개선사업 정보통신공사[2권역]",
+    "org": "경기도교육청 경기도안양과천교육지원청",
+    "notice_no": "R26BK01755850",
+    "region": "",
+    "base_amount": "491880000",
+    "notice_date": "2026-10-02 18:11:32",
+    "deadline": "2026-10-12 10:00:00",
+    "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01755850&bidPbancOrd=000",
+    "collected_at": "2026-10-03 01:47"
   },
   {
     "source": "나라장터",
@@ -69,7 +153,7 @@
     "notice_date": "2026-09-23 10:24:08",
     "deadline": "2026-10-12 17:00:00",
     "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01743125&bidPbancOrd=000",
-    "collected_at": "2026-10-02 02:03"
+    "collected_at": "2026-10-03 01:47"
   },
   {
     "source": "나라장터",
@@ -81,7 +165,7 @@
     "notice_date": "2026-09-21 16:22:08",
     "deadline": "2026-10-13 10:00:00",
     "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01738267&bidPbancOrd=001",
-    "collected_at": "2026-10-02 02:03"
+    "collected_at": "2026-10-03 01:47"
   },
   {
     "source": "나라장터",
@@ -93,7 +177,7 @@
     "notice_date": "2026-09-21 16:47:41",
     "deadline": "2026-10-13 10:00:00",
     "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01739723&bidPbancOrd=000",
-    "collected_at": "2026-10-02 02:03"
+    "collected_at": "2026-10-03 01:47"
   },
   {
     "source": "나라장터",
@@ -105,7 +189,19 @@
     "notice_date": "2026-09-23 14:53:39",
     "deadline": "2026-10-13 10:00:00",
     "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01743230&bidPbancOrd=000",
-    "collected_at": "2026-10-02 02:03"
+    "collected_at": "2026-10-03 01:47"
+  },
+  {
+    "source": "나라장터",
+    "title": "용곡정수장 개량 및 증설공사(정보통신)",
+    "org": "충청남도 천안시",
+    "notice_no": "R26BK01754459",
+    "region": "",
+    "base_amount": "659245455",
+    "notice_date": "2026-10-02 16:39:19",
+    "deadline": "2026-10-13 10:00:00",
+    "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01754459&bidPbancOrd=000",
+    "collected_at": "2026-10-03 01:47"
   },
   {
     "source": "나라장터",
@@ -117,7 +213,7 @@
     "notice_date": "2026-09-30 13:38:47",
     "deadline": "2026-10-13 12:00:00",
     "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01750731&bidPbancOrd=000",
-    "collected_at": "2026-10-02 02:03"
+    "collected_at": "2026-10-03 01:47"
   },
   {
     "source": "나라장터",
@@ -129,7 +225,7 @@
     "notice_date": "2026-10-01 14:40:35",
     "deadline": "2026-10-13 12:00:00",
     "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01752499&bidPbancOrd=000",
-    "collected_at": "2026-10-02 02:03"
+    "collected_at": "2026-10-03 01:47"
   },
   {
     "source": "나라장터",
@@ -141,7 +237,7 @@
     "notice_date": "2026-09-16 17:14:50",
     "deadline": "2026-10-14 10:00:00",
     "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01732691&bidPbancOrd=000",
-    "collected_at": "2026-10-02 02:03"
+    "collected_at": "2026-10-03 01:47"
   },
   {
     "source": "나라장터",
@@ -153,7 +249,7 @@
     "notice_date": "2026-09-30 19:10:00",
     "deadline": "2026-10-14 10:00:00",
     "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01750347&bidPbancOrd=000",
-    "collected_at": "2026-10-02 02:03"
+    "collected_at": "2026-10-03 01:47"
   },
   {
     "source": "나라장터",
@@ -165,7 +261,7 @@
     "notice_date": "2026-09-30 19:11:25",
     "deadline": "2026-10-14 10:00:00",
     "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01750900&bidPbancOrd=000",
-    "collected_at": "2026-10-02 02:03"
+    "collected_at": "2026-10-03 01:47"
   },
   {
     "source": "나라장터",
@@ -177,7 +273,7 @@
     "notice_date": "2026-10-01 15:51:32",
     "deadline": "2026-10-14 10:00:00",
     "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01753386&bidPbancOrd=000",
-    "collected_at": "2026-10-02 02:03"
+    "collected_at": "2026-10-03 01:47"
   },
   {
     "source": "나라장터",
@@ -189,7 +285,31 @@
     "notice_date": "2026-10-01 17:51:57",
     "deadline": "2026-10-14 10:00:00",
     "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01748335&bidPbancOrd=000",
-    "collected_at": "2026-10-02 02:03"
+    "collected_at": "2026-10-03 01:47"
+  },
+  {
+    "source": "나라장터",
+    "title": "(가칭)해마루고등학교 신축 정보통신공사(계속비)",
+    "org": "조달청 대구지방조달청",
+    "notice_no": "R26BK01754365",
+    "region": "",
+    "base_amount": "729800000",
+    "notice_date": "2026-10-02 13:07:17",
+    "deadline": "2026-10-14 10:00:00",
+    "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01754365&bidPbancOrd=000",
+    "collected_at": "2026-10-03 01:47"
+  },
+  {
+    "source": "나라장터",
+    "title": "전기차 충전인프라 해외시험인증 종합지원센터 건립(증축) 공사(통신)",
+    "org": "조달청 인천지방조달청",
+    "notice_no": "R26BK01754526",
+    "region": "",
+    "base_amount": "221020000",
+    "notice_date": "2026-10-02 17:15:04",
+    "deadline": "2026-10-14 10:00:00",
+    "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01754526&bidPbancOrd=000",
+    "collected_at": "2026-10-03 01:47"
   },
   {
     "source": "나라장터",
@@ -201,7 +321,7 @@
     "notice_date": "2026-09-30 13:49:47",
     "deadline": "2026-10-15 10:00:00",
     "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01750159&bidPbancOrd=000",
-    "collected_at": "2026-10-02 02:03"
+    "collected_at": "2026-10-03 01:47"
   },
   {
     "source": "나라장터",
@@ -213,7 +333,7 @@
     "notice_date": "2026-10-01 14:29:42",
     "deadline": "2026-10-21 10:00:00",
     "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01752571&bidPbancOrd=001",
-    "collected_at": "2026-10-02 02:03"
+    "collected_at": "2026-10-03 01:47"
   },
   {
     "source": "나라장터",
@@ -225,7 +345,7 @@
     "notice_date": "2026-09-23 14:18:10",
     "deadline": "2026-10-27 10:00:00",
     "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01726721&bidPbancOrd=001",
-    "collected_at": "2026-10-02 02:03"
+    "collected_at": "2026-10-03 01:47"
   },
   {
     "source": "나라장터",
@@ -237,6 +357,18 @@
     "notice_date": "2026-10-01 16:42:07",
     "deadline": "2026-10-27 10:00:00",
     "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01752959&bidPbancOrd=000",
-    "collected_at": "2026-10-02 02:03"
+    "collected_at": "2026-10-03 01:47"
+  },
+  {
+    "source": "나라장터",
+    "title": "한국폴리텍대학 밀양캠퍼스 건립 통신공사",
+    "org": "조달청 경남지방조달청",
+    "notice_no": "R26BK01754232",
+    "region": "30",
+    "base_amount": "1723200000",
+    "notice_date": "2026-10-02 14:03:55",
+    "deadline": "2026-10-27 10:00:00",
+    "url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01754232&bidPbancOrd=000",
+    "collected_at": "2026-10-03 01:47"
   }
 ]
